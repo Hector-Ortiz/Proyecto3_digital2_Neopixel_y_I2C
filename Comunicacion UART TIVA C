@@ -50,6 +50,3 @@ void loop() {
     }
   }
 }
-
-// Funciones MostrarMenu y MostrarNumeroCompleto aquí...
-
