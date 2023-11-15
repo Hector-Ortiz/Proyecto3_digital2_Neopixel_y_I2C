@@ -1,0 +1,55 @@
+#include <HardwareSerial.h>
+
+// Pines que se van a usar para la placa TIVA C para pantallas y botones
+#define BOTON PE_0 // Botón de la TIVA C
+
+HardwareSerial uart2(2);
+
+int pantallaActual = 0;  // Variable para rastrear la pantalla actual (0: Menú, 1: Mostrar RPM)
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(9600);
+  pinMode(BOTON, INPUT_PULLUP);
+}
+
+void loop() {
+  String receivedNumber;
+
+  while (Serial2.available()) {
+    char receivedChar = Serial2.read();
+    Serial.print("Caracter recibido desde UART2: ");
+    Serial.println(receivedChar);
+
+    if (isdigit(receivedChar)) {
+      receivedNumber += receivedChar;
+    }
+  }
+
+  if (receivedNumber.length() > 0) {
+    int numericValue = receivedNumber.toInt();
+    Serial.print("Número completo: ");
+    Serial.println(numericValue);
+
+    if (pantallaActual == 1) {
+      if (numericValue <= 200) {
+        // Mostrar el número en la pantalla
+        MostrarNumeroCompleto(numericValue);
+      } 
+    }
+  }
+
+  if (digitalRead(BOTON) == LOW) {
+    delay(100);
+    pantallaActual = (pantallaActual + 1) % 2;
+
+    if (pantallaActual == 0) {
+      MostrarMenu();
+    } else {
+      MostrarNumeroCompleto(0);
+    }
+  }
+}
+
+// Funciones MostrarMenu y MostrarNumeroCompleto aquí...
+
