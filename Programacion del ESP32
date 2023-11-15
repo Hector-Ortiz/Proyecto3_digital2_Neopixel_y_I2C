@@ -18,7 +18,7 @@ HardwareSerial uart2(2); // aclaracion del UART2
 MAX30105 particleSensor;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(16, 5, NEO_GRB + NEO_KHZ800); // Usa el pin 5 para la tira de Neopixel y 16 LEDs en total
 #define BUZZER_PIN 2 // pin del buzzer para que suene
-bool encenderLeds = false;
+bool ledE = false;
 
 void setup()
 {
@@ -99,7 +99,7 @@ void loop()
 
     // Cuando se presione el boton de la tiva C se enviara un mensaje que servira para cambiar el estado del neopixel para mostrar otro color
     if (receivedString.equals("melaza")) {
-      encenderLeds = true;
+      ledE = true;
       // Inicia el temporizador de 16 segundos como timer
       unsigned long startTime = millis();
       while (millis() - startTime < 16000) {
@@ -117,7 +117,8 @@ void loop()
         strip.setPixelColor(i, strip.Color(0, 0, 0)); // Apagado
       }
       strip.show();
-      encenderLeds = false; // Restablece el indicador
+      ledE = false; // Restablece el indicador
     }
   }
 }
+
