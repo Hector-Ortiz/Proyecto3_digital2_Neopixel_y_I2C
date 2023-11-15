@@ -1,0 +1,38 @@
+#include <HardwareSerial.h>
+
+// Pines RX y TX para UART2 en el ESP32
+#define RX_PIN 16
+#define TX_PIN 17
+
+// Configura el objeto Serial para UART2
+HardwareSerial uart2(2);
+
+void setup()
+{
+  Serial.begin(115200); // Inicio del Serial1
+  Serial2.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN); // Inicio del Serial2 con los pines en uso
+  Serial.println("Inicializando..."); // Menú de espera hasta que se encienda
+}
+
+void loop()
+{
+  int heartRate = 75; // Ejemplo de valor para el ritmo cardíaco
+
+  // Envía datos a través de UART2
+  Serial2.print("Tu ritmo cardiaco es de: ");
+  Serial2.println(heartRate);
+
+  // Lee datos de UART2
+  while (Serial2.available()) {
+    String receivedString = Serial2.readStringUntil('\n');
+    Serial.print("Cadena recibida desde UART2: ");
+    Serial.println(receivedString);
+
+    // Realiza acciones según la cadena recibida
+    if (receivedString.equals("hola")) {
+      Serial.println("Hola Mundo");
+    }
+  }
+
+  delay(1000); // Espera un segundo antes de repetir el bucle
+}
