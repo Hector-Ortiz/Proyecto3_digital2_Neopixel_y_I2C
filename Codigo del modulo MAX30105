@@ -1,0 +1,26 @@
+#include "MAX30105.h"
+#include <Wire.h>
+
+MAX30105 particleSensor;
+
+void setup() {
+  Serial.begin(115200);
+  
+  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) {
+    Serial.println("MAX30105 no encontrado. Verifica la conexión y alimentación.");
+    while (1);
+  }
+
+  Serial.println("MAX30105 encontrado!");
+}
+
+void loop() {
+  // Lee datos del sensor de pulso
+  int heartRate = particleSensor.getIR();
+
+  // Imprime el resultado en el puerto serie
+  Serial.print("Tu ritmo cardiaco es de: ");
+  Serial.println(heartRate / 1000); // Dividido por 1000 para obtener pulsaciones por segundo
+
+  delay(1000); // Espera 1 segundo antes de la próxima lectura
+}
